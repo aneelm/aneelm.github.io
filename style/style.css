@@ -29,10 +29,13 @@
 .f-7 { background-position-x: -480px }
 .f-8 { background-position-x: -560px }
 .f-9 { background-position-x: -640px }
-.f-10 { background-position-x: -720px }
+.f-X { background-position-x: -720px }
 .f-J { background-position-x: -800px }
 .f-Q { background-position-x: -880px }
 .f-K { background-position-x: -960px }
 .flipped {
-	background-position: 0px -480px;
+	/*background-position: 0px -480px;*/
+}
+.correct {
+	background-position: -120px -480px
 }

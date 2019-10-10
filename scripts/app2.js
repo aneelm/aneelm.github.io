@@ -1,11 +1,12 @@
 var ranks =
-["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
+["2", "3", "4", "5", "6", "7", "8", "9", "X", "J", "Q", "K", "A"];
 var suits =
 ["C", "D", "H", "S"];
 var cards = [];
 var deck = [];
 var firstCard, secondCard;
 var lockedBoard = false;
+var gameOpt;
 
 function gid(name) {
   return document.getElementById(name);
@@ -13,6 +14,7 @@ function gid(name) {
 function clearBox(name){
     gid(name).innerHTML = "";
     clearCards();
+    lockedBoard = false;
 }
 function makeAllCards() {
   ranks.forEach(rank => {
@@ -61,12 +63,20 @@ function checkCards() {
   if (!(firstCard == null) && !(secondCard == null)) {
     console.log("checking cards wtf")
     console.log(firstCard, secondCard)
-    if (firstCard.className == secondCard.className) {
-      return true;
-    } else {
-      return false;
+    if (gameOpt == 1) {
+      if (firstCard.className == secondCard.className) {
+        return true;
+      }
+    } else if (gameOpt == 2) {
+      if (
+        firstCard.className.substring(9, 10) ==
+        secondCard.className.substring(9,10)) {
+        return true;
+      }
     }
+
   }
+  return false;
 }
 function clearCards() {
   console.log("clearing cards");
@@ -108,6 +118,9 @@ function clickedCard(card) {
   if (card.classList.contains("correct")) {
     return;
   }
+  if (firstCard == card) {
+    return
+  }
   card.classList.remove("flipped")
   if (firstCard == null) {
     firstCard = card
@@ -116,9 +129,13 @@ function clickedCard(card) {
   }
   if (checkCards()) {
     console.log("CARDS ARE SAME")
-    setCardsCorrect();
-    clearCards();
-    gameOverCheck();
+    lockedBoard = true;
+    setTimeout(() => {
+      setCardsCorrect();
+      clearCards();
+      gameOverCheck();
+      lockedBoard = false;
+    }, 1000);
     return;
   } else {
     console.log("CARDS ARE NOT THE SAME")
@@ -133,13 +150,16 @@ function clickedCard(card) {
   }
 }
 function startGame(){
+  console.log(gameOpt)
   console.log("start game")
-  var opt = selection.options[selection.selectedIndex];
-  var value = parseInt(opt.value);
+  var sizeOpt = selection.options[selection.selectedIndex];
+  var gameOptZ = gameType.options[gameType.selectedIndex];
+  gameOpt = parseInt(gameOptZ.value)
+  var sizeValue = parseInt(sizeOpt.value);
   clearBox("play_area");
-  if (Number.isInteger(value)) {
+  if (Number.isInteger(sizeValue)) {
     makeAllCards();
-    makeDeck(value);
+    makeDeck(sizeValue);
       for (var j = 0; j < deck.length; j++) {
         var card = document.createElement("div");
         card.className = "card";
