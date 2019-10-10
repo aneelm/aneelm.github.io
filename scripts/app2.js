@@ -7,6 +7,7 @@ var deck = [];
 var firstCard, secondCard;
 var lockedBoard = false;
 var gameOpt;
+var originalTimeLeft = 100;
 var timeRemaining = 100;
 var isTimeUp = false;
 
@@ -14,7 +15,7 @@ function clock() {
   var myInterval = setInterval(() => {
     timeRemaining = timeRemaining - 1;
     gid("timer").innerHTML = "Timer: " + timeRemaining;
-    if (timeRemaining < 1) {
+    if (timeRemaining < 90) {
       clearInterval(myInterval);
       isTimeUp = true;
       gameOverCheck();
@@ -182,6 +183,7 @@ function startGame(){
   console.log(lockedBoard.toString())
   if (lockedBoard) {
     setTimeout(() => {
+      lockedBoard = false;
       startGame()
     }, 50);
     return
@@ -191,6 +193,8 @@ function startGame(){
   gameOpt = parseInt(gameOptZ.value)
   var sizeValue = parseInt(sizeOpt.value);
   clearBox("play_area");
+  timeRemaining = originalTimeLeft;
+  gid("timer").innerHTML = "Timer: " + timeRemaining;
   allCardsInvisible()
   setTimeout(() => {
     if (Number.isInteger(sizeValue)) {
