@@ -7,7 +7,26 @@ var deck = [];
 var firstCard, secondCard;
 var lockedBoard = false;
 var gameOpt;
+var timeRemaining = 100;
+var isTimeUp = false;
 
+function clock() {
+  var myInterval = setInterval(() => {
+    timeRemaining = timeRemaining - 1;
+    gid("timer").innerHTML = "Timer: " + timeRemaining;
+    if (timeRemaining < 1) {
+      clearInterval(myInterval);
+      isTimeUp = true;
+      gameOverCheck();
+    }
+  }, 1000);
+}
+function allCardsInvisible() {
+  var cardstochange = document.getElementsByClassName("flipped")
+  for (var i = 0; i < cardstochange.length; i++) {
+    cardstochange[i].classList.add("correct")
+  }
+}
 function gid(name) {
   return document.getElementById(name);
 }
@@ -97,6 +116,11 @@ function flipCards() {
 }
 function gameOverCheck() {
   console.log("gameOverCheck")
+  if (isTimeUp) {
+    lockedBoard = true;
+    alert("GAME OVER YOU LOSE HAHHAHAHAH\nNOT ENOUGH TIME HAHAHAH")
+    console.log("GAME OVER YOU LOSE BITCH")
+  }
   var divCards = gid("play_area").children
   var containsFlipped = false;
   for (var i = 0; i < divCards.length; i++) {
@@ -112,6 +136,9 @@ function gameOverCheck() {
   console.log(divCards);
 }
 function clickedCard(card) {
+  if (timeRemaining == 100) {
+    clock();
+  }
   if (lockedBoard) {
     return;
   }
@@ -152,28 +179,37 @@ function clickedCard(card) {
 function startGame(){
   console.log(gameOpt)
   console.log("start game")
+  console.log(lockedBoard.toString())
+  if (lockedBoard) {
+    setTimeout(() => {
+      startGame()
+    }, 50);
+    return
+  }
   var sizeOpt = selection.options[selection.selectedIndex];
   var gameOptZ = gameType.options[gameType.selectedIndex];
   gameOpt = parseInt(gameOptZ.value)
   var sizeValue = parseInt(sizeOpt.value);
   clearBox("play_area");
-  if (Number.isInteger(sizeValue)) {
-    makeAllCards();
-    makeDeck(sizeValue);
-      for (var j = 0; j < deck.length; j++) {
-        var card = document.createElement("div");
-        card.className = "card";
-        card.classList.add(deck[j].suit)
-        card.classList.add("f-" + deck[j].rank)
-        card.classList.add("flipped")
-        card.addEventListener("click", function() {
-          clickedCard(this);
-        })
-        gid("play_area").appendChild(card);
+  allCardsInvisible()
+  setTimeout(() => {
+    if (Number.isInteger(sizeValue)) {
+      makeDeck(sizeValue);
+        for (var j = 0; j < deck.length; j++) {
+          var card = document.createElement("div");
+          card.className = "card";
+          card.classList.add(deck[j].suit)
+          card.classList.add("f-" + deck[j].rank)
+          card.classList.add("flipped")
+          card.addEventListener("click", function() {
+            clickedCard(this);
+          })
+          gid("play_area").appendChild(card);
+        }
       }
-    }
-    console.log(deck);
-    console.log(cards.length);
+  }, 50);
+  console.log(deck);
+  console.log(cards.length);
 }
-
+makeAllCards();
 gid("start_game").addEventListener("click", startGame);
