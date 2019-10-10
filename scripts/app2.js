@@ -13,7 +13,7 @@ var scoreOG = 100;
 var scoreTemp = 100;
 var isTimeUp = false;
 
-#// TODO: VISKAB MINGIT LOOPI KUI AEG OTSA SAAB
+
 function clock() {
   var myInterval = setInterval(() => {
     timeRemaining = timeRemaining - 1;
@@ -202,7 +202,7 @@ function startGame(){
   clearBox("play_area");
   timeRemaining = originalTimeLeft;
   gid("timer").innerHTML = "Timer: " + timeRemaining;
- // allCardsInvisible()
+  allCardsInvisible()
   setTimeout(() => {
     if (Number.isInteger(sizeValue)) {
       makeDeck(sizeValue);
