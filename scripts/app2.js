@@ -9,8 +9,11 @@ var lockedBoard = false;
 var gameOpt;
 var originalTimeLeft = 100;
 var timeRemaining = 100;
+var scoreOG = 100;
+var scoreTemp = 100;
 var isTimeUp = false;
 
+#// TODO: VISKAB MINGIT LOOPI KUI AEG OTSA SAAB
 function clock() {
   var myInterval = setInterval(() => {
     timeRemaining = timeRemaining - 1;
@@ -164,11 +167,15 @@ function clickedCard(card) {
       gameOverCheck();
       lockedBoard = false;
     }, 1000);
+    scoreTemp = scoreTemp + 20;
+    gid("score").innerHTML = "Score: " + (scoreTemp);
     return;
   } else {
     console.log("CARDS ARE NOT THE SAME")
   }
   if (!(firstCard == null) && !(secondCard == null)) {
+    scoreTemp = scoreTemp - 10;
+    gid("score").innerHTML = "Score: " + (scoreTemp);
     lockedBoard = true;
     setTimeout(() => {
       flipCards();
