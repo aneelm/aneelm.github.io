@@ -34,7 +34,7 @@
 .f-Q { background-position-x: -880px }
 .f-K { background-position-x: -960px }
 .flipped {
-	/*background-position: 0px -480px;*/
+	background-position: 0px -480px;
 }
 .correct {
 	background-position: -120px -480px
