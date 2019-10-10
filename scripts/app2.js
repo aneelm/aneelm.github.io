@@ -202,7 +202,7 @@ function startGame(){
   clearBox("play_area");
   timeRemaining = originalTimeLeft;
   gid("timer").innerHTML = "Timer: " + timeRemaining;
-  allCardsInvisible()
+ // allCardsInvisible()
   setTimeout(() => {
     if (Number.isInteger(sizeValue)) {
       makeDeck(sizeValue);
