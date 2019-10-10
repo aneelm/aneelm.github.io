@@ -15,7 +15,7 @@ function clock() {
   var myInterval = setInterval(() => {
     timeRemaining = timeRemaining - 1;
     gid("timer").innerHTML = "Timer: " + timeRemaining;
-    if (timeRemaining < 90) {
+    if (timeRemaining < 1) {
       clearInterval(myInterval);
       isTimeUp = true;
       gameOverCheck();
