@@ -37,7 +37,7 @@ body {
 .f-Q { background-position-x: calc(-11 * var(--x))}
 .f-K { background-position-x: calc(-12 * var(--x))}
 .flipped {
-
+	background-position: 0px -480px
 }
 .correct {
 	background-position: -120px -480px
