@@ -13,7 +13,7 @@ var scoreOG = 100;
 var scoreTemp = 100;
 var isTimeUp = false;
 
-
+// TODO: VISKAB MINGIT LOOPI KUI AEG OTSA SAAB
 function clock() {
   var myInterval = setInterval(() => {
     timeRemaining = timeRemaining - 1;
