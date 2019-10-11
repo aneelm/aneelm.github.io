@@ -5,13 +5,14 @@ var suits =
 var cards = [], deck = [];
 var firstCard, secondCard;
 var lockedBoard = false;
-var gameOpt, sizeValue;
 var originalTimeLeft = 100;
 var timeRemaining = 100;
 var scoreOG = 100, scoreTemp = 100, gamesPlayed = 0;
 var wonOrLost, clockIsRunning = false, isTimeUp = false;
 var highScores = [];
 var scoresString = "";
+var sizeOpt, gameOptZ, sizeValue, gameOpt;
+var myInterval;
 
 function addToHighScores() {
   if (gameOpt == 1) {
@@ -36,33 +37,21 @@ function addToHighScores() {
 function clock() {
   if (clockIsRunning) {
     return;
+  } else {
+    clockIsRunning = true;
   }
-  var myInterval = setInterval(() => {
-    if (timeRemaining < 0.5 && !isTimeUp) {
+  myInterval = setInterval(() => {
+    if (!clockIsRunning) {
       clearInterval(myInterval);
-      isTimeUp = true;
-      lockedBoard = true;
-      wonOrLost = "lost";
-      gamesPlayed = gamesPlayed + 1;
-      addToHighScores();
-      gid("gameNR").innerHTML = "Game count: " + gamesPlayed
-      alert("GAME OVER YOU LOSE HAHHAHAHAH\nNOT ENOUGH TIME HAHAHAH")
-      console.log("GAME OVER YOU LOSE BITCH")
-      clockIsRunning = false;
       return;
     }
-    if (wonOrLost == "won") {
-      clearInterval(myInterval);
-      gid("gameNR").innerHTML = "Game count: " + gamesPlayed
-      clockIsRunning = false;
-      return
-    }
+    gameOverCheck();
     timeRemaining = timeRemaining - 0.5;
     gid("timer").innerHTML = "Timer: " + timeRemaining;
   }, 500);
 }
 function allCardsInvisible() {
-  var cardstochange = document.getElementsByClassName("flipped")
+  var cardstochange = document.getElementsByClassName("card")
   for (var i = 0; i < cardstochange.length; i++) {
     cardstochange[i].classList.add("correct")
   }
@@ -71,13 +60,21 @@ function gid(name) {
   return document.getElementById(name);
 }
 function resetBoard(){
-    gid("play_area").innerHTML = "";
-    clearCards();
-    timeRemaining = originalTimeLeft;
-    scoreTemp = scoreOG;
-    lockedBoard = false;
-    wonOrLost = null;
-    isTimeUp = false;
+  sizeOpt = selection.options[selection.selectedIndex];
+  gameOptZ = gameType.options[gameType.selectedIndex];
+  sizeValue = parseInt(sizeOpt.value);
+  gameOpt = parseInt(gameOptZ.value);
+  clearCards();
+  timeRemaining = originalTimeLeft;
+  scoreTemp = scoreOG;
+  lockedBoard = false;
+  wonOrLost = null;
+  clockIsRunning = false;
+  isTimeUp = false;
+  gid("timer").innerHTML = "Timer: " + timeRemaining;
+  gid("score").innerHTML = "Score: " + (scoreTemp);
+  gid("play_area").innerHTML = "";
+  allCardsInvisible()
 }
 function makeAllCards() {
   ranks.forEach(rank => {
@@ -151,12 +148,8 @@ function setCardsCorrect() {
   secondCard.classList.add("correct")
 }
 function flipCards() {
-  if (!(firstCard.classList.contains("flipped"))) {
-    if (!(secondCard.classList.contains("flipped"))) {
-      firstCard.classList.add("flipped")
-      secondCard.classList.add("flipped")
-    }
-  }
+  firstCard.classList.toggle("flipped")
+  secondCard.classList.toggle("flipped")
 }
 function gameOverCheck() {
   console.log("gameOverCheck")
@@ -166,6 +159,25 @@ function gameOverCheck() {
     if (divCards[i].classList.contains("flipped")) {
       containsFlipped = true;
     }
+  }
+  if (timeRemaining < 95 && !isTimeUp) {
+    clearInterval(myInterval);
+    isTimeUp = true;
+    lockedBoard = true;
+    wonOrLost = "lost";
+    gamesPlayed = gamesPlayed + 1;
+    addToHighScores();
+    gid("gameNR").innerHTML = "Game count: " + gamesPlayed
+    alert("GAME OVER YOU LOSE HAHHAHAHAH\nNOT ENOUGH TIME HAHAHAH")
+    console.log("GAME OVER YOU LOSE BITCH")
+    clockIsRunning = false;
+    return;
+  }
+  if (wonOrLost == "won") {
+    clearInterval(myInterval);
+    gid("gameNR").innerHTML = "Game count: " + gamesPlayed
+    clockIsRunning = false;
+    return
   }
   if (!containsFlipped) {
     lockedBoard = true;
@@ -178,12 +190,12 @@ function gameOverCheck() {
   console.log(divCards);
 }
 function clickedCard(card) {
+  if (lockedBoard) {
+    return;
+  }
   if (timeRemaining == 100) {
     clock();
     clockIsRunning = true;
-  }
-  if (lockedBoard) {
-    return;
   }
   if (card.classList.contains("correct")) {
     return;
@@ -209,8 +221,6 @@ function clickedCard(card) {
     scoreTemp = scoreTemp + 20;
     gid("score").innerHTML = "Score: " + (scoreTemp);
     return;
-  } else {
-    console.log("CARDS ARE NOT THE SAME")
   }
   if (!(firstCard == null) && !(secondCard == null)) {
     scoreTemp = scoreTemp - 10;
@@ -223,9 +233,7 @@ function clickedCard(card) {
     }, 1500);
   }
 }
-function startGame(){
-  console.log("start game")
-  console.log(lockedBoard.toString())
+function startGame() {
   if (lockedBoard) {
     setTimeout(() => {
       lockedBoard = false;
@@ -234,13 +242,6 @@ function startGame(){
     return
   }
   resetBoard();
-  var sizeOpt = selection.options[selection.selectedIndex];
-  var gameOptZ = gameType.options[gameType.selectedIndex];
-  sizeValue = parseInt(sizeOpt.value);
-  gameOpt = parseInt(gameOptZ.value);
-  gid("timer").innerHTML = "Timer: " + timeRemaining;
-  resetBoard("play_area");
-  allCardsInvisible()
   setTimeout(() => {
     if (Number.isInteger(sizeValue)) {
       makeDeck(sizeValue);
@@ -260,6 +261,7 @@ function startGame(){
   console.log(deck);
   console.log(cards.length);
 }
+
 makeAllCards();
 gid("checkHighScores").addEventListener("click", function(){
   alert(scoresString);

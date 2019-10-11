@@ -8,11 +8,6 @@ body {
 .play_area {
 	width: auto;
 }
-.row {
-	height: auto;
-	width: auto;
-	margin-bottom: -4px;
-}
 .card {
 	width: 80px;
 	height: 120px;
@@ -37,8 +32,8 @@ body {
 .f-Q { background-position-x: calc(-11 * var(--x))}
 .f-K { background-position-x: calc(-12 * var(--x))}
 .flipped {
-	background-position: 0px -480px
+	background-position: 0px -480px;
 }
 .correct {
-	background-position: -120px -480px
+	background-position: -120px -480px;
 }
