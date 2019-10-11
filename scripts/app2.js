@@ -14,18 +14,32 @@ var scoresString = "";
 var sizeOpt, gameOptZ, sizeValue, gameOpt;
 var myInterval;
 
+function limit(element)
+{
+    var max_chars = 8;
+
+    if(element.value.length > max_chars) {
+        element.value = element.value.substr(0, max_chars);
+    }
+}
 function addToHighScores() {
+  var name = gid("name").value;
+  console.log(name)
+  if (name == "") {
+    name = "unknown"
+  }
   if (gameOpt == 1) {
     difficulty = "hard";
   } else {
     difficulty = "easy";
   }
   highScores.push(
-    {gamesPlayed: gamesPlayed, score: scoreTemp,
+    {name: name, gamesPlayed: gamesPlayed, score: scoreTemp,
       time: timeRemaining, ending: wonOrLost, difficulty: difficulty,
     size: sizeValue}
   )
-  scoresString += "Game Number: " +
+  scoresString += highScores[highScores.length-1].name +
+  " --- Game Number: " +
   highScores[highScores.length-1].gamesPlayed +
   " ended with a score of " +
   highScores[highScores.length-1].score + " and you had " +
