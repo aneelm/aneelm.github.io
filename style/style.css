@@ -1,4 +1,7 @@
-
+body {
+	--x: 80px;
+	--y: 120px;
+}
 .selection {
 	width: 100px;
 }
@@ -16,25 +19,25 @@
 	display: inline-block;
 	background: url("../pictures/cardfaces.png");
 }
-.S { background-position-y: 0px}
-.C { background-position-y: -120px}
-.H { background-position-y: -240px}
-.D { background-position-y: -360px}
-.f-A { background-position-x: 0px }
-.f-2 { background-position-x: -80px }
-.f-3 { background-position-x: -160px }
-.f-4 { background-position-x: -240px }
-.f-5 { background-position-x: -320px }
-.f-6 { background-position-x: -400px }
-.f-7 { background-position-x: -480px }
-.f-8 { background-position-x: -560px }
-.f-9 { background-position-x: -640px }
-.f-X { background-position-x: -720px }
-.f-J { background-position-x: -800px }
-.f-Q { background-position-x: -880px }
-.f-K { background-position-x: -960px }
+.S { background-position-y: calc(0 * var(--y))}
+.C { background-position-y: calc(-1 * var(--y))}
+.H { background-position-y: calc(-2 * var(--y))}
+.D { background-position-y: calc(-3 * var(--y))}
+.f-A { background-position-x: calc(0 * var(--x))}
+.f-2 { background-position-x: calc(-1 * var(--x))}
+.f-3 { background-position-x: calc(-2 * var(--x))}
+.f-4 { background-position-x: calc(-3 * var(--x))}
+.f-5 { background-position-x: calc(-4 * var(--x))}
+.f-6 { background-position-x: calc(-5 * var(--x))}
+.f-7 { background-position-x: calc(-6 * var(--x))}
+.f-8 { background-position-x: calc(-7 * var(--x))}
+.f-9 { background-position-x: calc(-8 * var(--x))}
+.f-X { background-position-x: calc(-9 * var(--x))}
+.f-J { background-position-x: calc(-10 * var(--x))}
+.f-Q { background-position-x: calc(-11 * var(--x))}
+.f-K { background-position-x: calc(-12 * var(--x))}
 .flipped {
-	background-position: 0px -480px;
+
 }
 .correct {
 	background-position: -120px -480px
