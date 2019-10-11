@@ -2,6 +2,15 @@ body {
 	--x: 80px;
 	--y: 120px;
 }
+table, tr, th {
+	border-collapse: collapse;
+  border: 1px solid black;
+  border-spacing: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
 .selection {
 	width: 100px;
 }

@@ -32,7 +32,24 @@ function addToHighScores() {
   highScores[highScores.length-1].time + " seconds left. You " +
   highScores[highScores.length-1].ending + " the game. Game size was " +
   highScores[highScores.length-1].size + " and you were playing " +
-  "on " + highScores[highScores.length-1].difficulty + " mode.\n\n" ;
+  "on " + highScores[highScores.length-1].difficulty + " mode.\n\n";
+  console.log(highScores[0].score)
+  addHighScoresToTable();
+}
+function addHighScoresToTable() {
+  var body = gid("body");
+  body.innerHTML = "";
+  for (var i = 0; i < highScores.length; i++) {
+    var tr = document.createElement("tr");
+    for (var key in highScores[i]) {
+      var th = document.createElement("th");
+      console.log(highScores[i][key]);
+      th.innerHTML = highScores[i][key];
+      tr.appendChild(th);
+    }
+    body.appendChild(tr);
+  }
+
 }
 function clock() {
   if (clockIsRunning) {
