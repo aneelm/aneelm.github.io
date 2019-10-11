@@ -2,28 +2,63 @@ var ranks =
 ["2", "3", "4", "5", "6", "7", "8", "9", "X", "J", "Q", "K", "A"];
 var suits =
 ["C", "D", "H", "S"];
-var cards = [];
-var deck = [];
+var cards = [], deck = [];
 var firstCard, secondCard;
 var lockedBoard = false;
-var gameOpt;
+var gameOpt, sizeValue;
 var originalTimeLeft = 100;
 var timeRemaining = 100;
-var scoreOG = 100;
-var scoreTemp = 100;
-var isTimeUp = false;
+var scoreOG = 100, scoreTemp = 100, gamesPlayed = 0;
+var wonOrLost, clockIsRunning = false, isTimeUp = false;
+var highScores = [];
+var scoresString = "";
 
-// TODO: VISKAB MINGIT LOOPI KUI AEG OTSA SAAB
+function addToHighScores() {
+  if (gameOpt == 1) {
+    difficulty = "hard";
+  } else {
+    difficulty = "easy";
+  }
+  highScores.push(
+    {gamesPlayed: gamesPlayed, score: scoreTemp,
+      time: timeRemaining, ending: wonOrLost, difficulty: difficulty,
+    size: sizeValue}
+  )
+  scoresString += "Game Number: " +
+  highScores[highScores.length-1].gamesPlayed +
+  " ended with a score of " +
+  highScores[highScores.length-1].score + " and you had " +
+  highScores[highScores.length-1].time + " seconds left. You " +
+  highScores[highScores.length-1].ending + " the game. Game size was " +
+  highScores[highScores.length-1].size + " and you were playing " +
+  "on " + highScores[highScores.length-1].difficulty + " mode.\n\n" ;
+}
 function clock() {
+  if (clockIsRunning) {
+    return;
+  }
   var myInterval = setInterval(() => {
-    timeRemaining = timeRemaining - 1;
+    timeRemaining = timeRemaining - 0.5;
     gid("timer").innerHTML = "Timer: " + timeRemaining;
-    if (timeRemaining < 1) {
+    if (timeRemaining < 0.5 && !isTimeUp) {
       clearInterval(myInterval);
       isTimeUp = true;
-      gameOverCheck();
+      lockedBoard = true;
+      wonOrLost = "lost";
+      gamesPlayed = gamesPlayed + 1;
+      addToHighScores();
+      gid("gameNR").innerHTML = "Game count: " + gamesPlayed
+      alert("GAME OVER YOU LOSE HAHHAHAHAH\nNOT ENOUGH TIME HAHAHAH")
+      console.log("GAME OVER YOU LOSE BITCH")
+      clockIsRunning = false;
+      return;
     }
-  }, 1000);
+    if (wonOrLost == "won") {
+      clearInterval(myInterval);
+      gid("gameNR").innerHTML = "Game count: " + gamesPlayed
+      clockIsRunning = false;
+    }
+  }, 500);
 }
 function allCardsInvisible() {
   var cardstochange = document.getElementsByClassName("flipped")
@@ -34,10 +69,14 @@ function allCardsInvisible() {
 function gid(name) {
   return document.getElementById(name);
 }
-function clearBox(name){
-    gid(name).innerHTML = "";
+function resetBoard(){
+    gid("play_area").innerHTML = "";
     clearCards();
+    timeRemaining = originalTimeLeft;
+    scoreTemp = scoreOG;
     lockedBoard = false;
+    wonOrLost = null;
+    isTimeUp = false;
 }
 function makeAllCards() {
   ranks.forEach(rank => {
@@ -120,11 +159,6 @@ function flipCards() {
 }
 function gameOverCheck() {
   console.log("gameOverCheck")
-  if (isTimeUp) {
-    lockedBoard = true;
-    alert("GAME OVER YOU LOSE HAHHAHAHAH\nNOT ENOUGH TIME HAHAHAH")
-    console.log("GAME OVER YOU LOSE BITCH")
-  }
   var divCards = gid("play_area").children
   var containsFlipped = false;
   for (var i = 0; i < divCards.length; i++) {
@@ -134,6 +168,9 @@ function gameOverCheck() {
   }
   if (!containsFlipped) {
     lockedBoard = true;
+    wonOrLost = "won";
+    gamesPlayed = gamesPlayed + 1;
+    addToHighScores();
     alert("GAME OVER YOU WIN")
     console.log("GAME OVER YOU WIN BITCH")
   }
@@ -142,6 +179,7 @@ function gameOverCheck() {
 function clickedCard(card) {
   if (timeRemaining == 100) {
     clock();
+    clockIsRunning = true;
   }
   if (lockedBoard) {
     return;
@@ -185,7 +223,6 @@ function clickedCard(card) {
   }
 }
 function startGame(){
-  console.log(gameOpt)
   console.log("start game")
   console.log(lockedBoard.toString())
   if (lockedBoard) {
@@ -195,13 +232,13 @@ function startGame(){
     }, 50);
     return
   }
+  resetBoard();
   var sizeOpt = selection.options[selection.selectedIndex];
   var gameOptZ = gameType.options[gameType.selectedIndex];
-  gameOpt = parseInt(gameOptZ.value)
-  var sizeValue = parseInt(sizeOpt.value);
-  clearBox("play_area");
-  timeRemaining = originalTimeLeft;
+  sizeValue = parseInt(sizeOpt.value);
+  gameOpt = parseInt(gameOptZ.value);
   gid("timer").innerHTML = "Timer: " + timeRemaining;
+  resetBoard("play_area");
   allCardsInvisible()
   setTimeout(() => {
     if (Number.isInteger(sizeValue)) {
@@ -223,4 +260,7 @@ function startGame(){
   console.log(cards.length);
 }
 makeAllCards();
+gid("checkHighScores").addEventListener("click", function(){
+  alert(scoresString);
+});
 gid("start_game").addEventListener("click", startGame);
