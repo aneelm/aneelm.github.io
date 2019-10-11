@@ -45,9 +45,10 @@ function clock() {
       clearInterval(myInterval);
       return;
     }
-    gameOverCheck();
-    timeRemaining = timeRemaining - 0.5;
-    gid("timer").innerHTML = "Timer: " + timeRemaining;
+    if (wonOrLost == null) {
+      timeRemaining = timeRemaining - 0.5;
+      gid("timer").innerHTML = "Timer: " + timeRemaining;
+    }
   }, 500);
 }
 function allCardsInvisible() {
@@ -71,6 +72,7 @@ function resetBoard(){
   wonOrLost = null;
   clockIsRunning = false;
   isTimeUp = false;
+  wonOrLost = null;
   gid("timer").innerHTML = "Timer: " + timeRemaining;
   gid("score").innerHTML = "Score: " + (scoreTemp);
   gid("play_area").innerHTML = "";
@@ -160,7 +162,7 @@ function gameOverCheck() {
       containsFlipped = true;
     }
   }
-  if (timeRemaining < 95 && !isTimeUp) {
+  if (timeRemaining < 0.5 && !isTimeUp) {
     clearInterval(myInterval);
     isTimeUp = true;
     lockedBoard = true;
@@ -173,19 +175,17 @@ function gameOverCheck() {
     clockIsRunning = false;
     return;
   }
-  if (wonOrLost == "won") {
-    clearInterval(myInterval);
-    gid("gameNR").innerHTML = "Game count: " + gamesPlayed
-    clockIsRunning = false;
-    return
-  }
   if (!containsFlipped) {
     lockedBoard = true;
     wonOrLost = "won";
     gamesPlayed = gamesPlayed + 1;
+    clearInterval(myInterval);
+    gid("gameNR").innerHTML = "Game count: " + gamesPlayed
+    clockIsRunning = false;
     addToHighScores();
     alert("GAME OVER YOU WIN")
     console.log("GAME OVER YOU WIN BITCH")
+    return;
   }
   console.log(divCards);
 }
