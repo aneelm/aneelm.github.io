@@ -38,8 +38,6 @@ function clock() {
     return;
   }
   var myInterval = setInterval(() => {
-    timeRemaining = timeRemaining - 0.5;
-    gid("timer").innerHTML = "Timer: " + timeRemaining;
     if (timeRemaining < 0.5 && !isTimeUp) {
       clearInterval(myInterval);
       isTimeUp = true;
@@ -57,7 +55,10 @@ function clock() {
       clearInterval(myInterval);
       gid("gameNR").innerHTML = "Game count: " + gamesPlayed
       clockIsRunning = false;
+      return
     }
+    timeRemaining = timeRemaining - 0.5;
+    gid("timer").innerHTML = "Timer: " + timeRemaining;
   }, 500);
 }
 function allCardsInvisible() {
