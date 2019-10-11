@@ -17,11 +17,16 @@ var myInterval;
 function limit(element)
 {
     var max_chars = 8;
-
     if(element.value.length > max_chars) {
         element.value = element.value.substr(0, max_chars);
     }
 }
+function checkInputLength() {
+  var inputInterval = setInterval(() => {
+    gid("name").value = gid("name").value.substr(0, 8);
+  }, 100);
+}
+
 function addToHighScores() {
   var name = gid("name").value;
   console.log(name)
@@ -75,6 +80,9 @@ function clock() {
     if (!clockIsRunning) {
       clearInterval(myInterval);
       return;
+    }
+    if (timeRemaining < 0.5) {
+      wonOrLost = "lost";
     }
     if (wonOrLost == null) {
       timeRemaining = timeRemaining - 0.5;
@@ -292,8 +300,11 @@ function startGame() {
   console.log(deck);
   console.log(cards.length);
 }
-
+checkInputLength();
 makeAllCards();
+gid("name").addEventListener("keypress", function(){
+  limit(this);
+});
 gid("checkHighScores").addEventListener("click", function(){
   alert(scoresString);
 });
