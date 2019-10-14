@@ -24,8 +24,8 @@ table, tr, th {
 	background: url("../pictures/cardfaces.png");
 }
 .S { background-position-y: calc(0 * var(--y))}
-.C { background-position-y: calc(-1 * var(--y))}
-.H { background-position-y: calc(-2 * var(--y))}
+.H { background-position-y: calc(-1 * var(--y))}
+.C { background-position-y: calc(-2 * var(--y))}
 .D { background-position-y: calc(-3 * var(--y))}
 .f-A { background-position-x: calc(0 * var(--x))}
 .f-2 { background-position-x: calc(-1 * var(--x))}

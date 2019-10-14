@@ -13,9 +13,9 @@ var highScores = [];
 var scoresString = "";
 var sizeOpt, gameOptZ, sizeValue, gameOpt;
 var myInterval;
+var timeIsUpTime = 0.5;
 
-function limit(element)
-{
+function limit(element) {
     var max_chars = 8;
     if(element.value.length > max_chars) {
         element.value = element.value.substr(0, max_chars);
@@ -26,7 +26,6 @@ function checkInputLength() {
     gid("name").value = gid("name").value.substr(0, 8);
   }, 100);
 }
-
 function addToHighScores() {
   var name = gid("name").value;
   console.log(name)
@@ -81,8 +80,9 @@ function clock() {
       clearInterval(myInterval);
       return;
     }
-    if (timeRemaining < 0.5) {
+    if (timeRemaining < timeIsUpTime) {
       wonOrLost = "lost";
+      gameOverCheck();
     }
     if (wonOrLost == null) {
       timeRemaining = timeRemaining - 0.5;
@@ -201,7 +201,8 @@ function gameOverCheck() {
       containsFlipped = true;
     }
   }
-  if (timeRemaining < 0.5 && !isTimeUp) {
+  if (timeRemaining < timeIsUpTime && !isTimeUp) {
+    console.log("time is up in gameOverCheck")
     clearInterval(myInterval);
     isTimeUp = true;
     lockedBoard = true;
