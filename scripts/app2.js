@@ -15,6 +15,72 @@ var sizeOpt, gameOptZ, sizeValue, gameOpt;
 var myInterval;
 var timeIsUpTime = 0.5;
 
+function makeAllCards() {
+  ranks.forEach(rank => {
+    suits.forEach(suit => {
+      cards.push(
+        {rank: rank, suit:suit}
+      )
+    })
+  })
+}
+function makeDeck(value) {
+  if (!(deck.length == 0)) {
+    deck = [];
+  }
+  if (gameOpt == 1) {
+    makeDeckHard(value);
+  } else if (gameOpt == 2) {
+    makeDeckeasy(value)
+  }
+  console.clear();
+  console.log("Deck length: ", deck.length);
+}
+function makeDeckHard(value) {
+  var diffCardsNeeded = value/2;
+  for (var i = 0; i < diffCardsNeeded; i++) {
+    var x = Math.floor(Math.random()*52);
+    if (!deck.includes(cards[x])) {
+      deck.push(cards[x]);
+      deck.push(cards[x]);
+    } else {
+      i = i-1;
+    }
+  }
+  shuffle(deck);
+}
+function makeDeckeasy(value) {
+  for (var i = 0; i < value/2; i++) {
+    var x = Math.floor(Math.random()*52);
+    var y = Math.floor(Math.random()*4);
+    var randomSuit = suits[y]
+    var areSuitsSameBoolean = areSuitsSame(cards[x], randomSuit);
+    if (!deck.includes(cards[x])) {
+      if (!areSuitsSameBoolean) {
+        if (!deck.includes({rank: cards[x].rank, suit:randomSuit})) {
+          deck.push(cards[x]);
+          deck.push(
+            {rank: cards[x].rank, suit:randomSuit}
+          );
+        } else {
+          i = i-1;
+        }
+      } else {
+        i = i-1;
+      }
+    } else {
+      i = i-1;
+    }
+  }
+  shuffle(deck);
+}
+function areSuitsSame(card, randomSuit) {
+  //console.log(card.suit, randomSuit)
+  if (card.suit == randomSuit) {
+    return true;
+  }
+  return false;
+}
 function limit(element) {
     var max_chars = 8;
     if(element.value.length > max_chars) {
@@ -117,15 +183,6 @@ function resetBoard(){
   gid("play_area").innerHTML = "";
   allCardsInvisible()
 }
-function makeAllCards() {
-  ranks.forEach(rank => {
-    suits.forEach(suit => {
-      cards.push(
-        {rank: rank, suit:suit}
-      )
-    })
-  })
-}
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
 
@@ -143,22 +200,6 @@ function shuffle(array) {
   }
 
   return array;
-}
-function makeDeck(value) {
-  if (!(deck.length == 0)) {
-    deck = [];
-  }
-  var diffCardsNeeded = value/2;
-  for (var i = 0; i < diffCardsNeeded; i++) {
-    var x = Math.floor(Math.random()*52);
-    if (!deck.includes(cards[x])) {
-      deck.push(cards[x]);
-      deck.push(cards[x]);
-    } else {
-      i = i-1;
-    }
-  }
-  shuffle(deck);
 }
 function checkCards() {
   if (!(firstCard == null) && !(secondCard == null)) {
@@ -298,11 +339,12 @@ function startGame() {
         }
       }
   }, 50);
-  console.log(deck);
-  console.log(cards.length);
+  //console.log(deck);
 }
+
 checkInputLength();
 makeAllCards();
+
 gid("name").addEventListener("keypress", function(){
   limit(this);
 });
