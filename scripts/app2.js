@@ -162,7 +162,7 @@ function makeDeck(value) {
 }
 function checkCards() {
   if (!(firstCard == null) && !(secondCard == null)) {
-    console.log("checking cards wtf")
+    console.log("checking cards")
     console.log(firstCard, secondCard)
     if (gameOpt == 1) {
       if (firstCard.className == secondCard.className) {
@@ -211,7 +211,7 @@ function gameOverCheck() {
     addToHighScores();
     gid("gameNR").innerHTML = "Game count: " + gamesPlayed
     alert("GAME OVER YOU LOSE HAHHAHAHAH\nNOT ENOUGH TIME HAHAHAH")
-    console.log("GAME OVER YOU LOSE BITCH")
+    console.log("GAME OVER YOU LOSE")
     clockIsRunning = false;
     return;
   }
@@ -224,7 +224,7 @@ function gameOverCheck() {
     clockIsRunning = false;
     addToHighScores();
     alert("GAME OVER YOU WIN")
-    console.log("GAME OVER YOU WIN BITCH")
+    console.log("GAME OVER YOU WIN")
     return;
   }
   console.log(divCards);
